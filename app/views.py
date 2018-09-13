@@ -40,7 +40,7 @@ def add_vector():
     if 'vector' not in data:
         raise InvalidUsage('Vector parameter is missing')
 
-    vector = pickle.loads(data['vector'].encode())
+    vector = data['vector']
 
     print(vars(app.config))
     if len(vector) != app.config['ANN_INDEX_LENGTH']:
@@ -57,7 +57,7 @@ def find_vector():
     data = request.get_json()
     if 'vector' not in data:
         raise InvalidUsage('Vector parameter is missing', status_code=400)
-    vector = pickle.loads(data['vector'].encode())
+    vector = data['vector']
     match = ann_ix.get_nns_by_vector(vector, 1, search_k=-1, include_distances=True)
 
     if len(match[0]) > 0:
