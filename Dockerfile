@@ -1,14 +1,12 @@
-FROM python:3.6
+FROM golang:alpine
 
-WORKDIR /home/nn_search
+RUN apk --update add build-base git openssh && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /var/cache/apk/* && \
+    go get github.com/cachengo/gannoy/...
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
-COPY . ./
-RUN chmod a+x boot.sh
-
-ENV FLASK_APP=nn_search.py
+COPY boot.sh /boot.sh
 ENV ANN_INDEX_LENGTH=3
-EXPOSE 5000
-ENTRYPOINT ["./boot.sh"]
+EXPOSE 1323
+WORKDIR /db
+ENTRYPOINT ["/boot.sh"]
